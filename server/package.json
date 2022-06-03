@@ -14,9 +14,13 @@
 
     "express-openid-connect": "^2.7.2",
 
+    "express-session": "^1.17.3",
+
     "firebase": "^9.8.1",
 
     "nodemon": "^2.0.16",
+
+    "passport": "^0.6.0",
 
     "passport-local": "^1.0.0",
 

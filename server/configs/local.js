@@ -2,12 +2,12 @@
 
 const passport=require('passport');
 //passport strategy class
-const {strategy}=require("passport-local");
+const {Strategy}=require("passport-local");
 
 //use fucntion to setup passport
 passport.use(
     //psss instance or constructor of startegy
-    new strategy(
+    new Strategy(
         {
             usernameField:"email",
         },

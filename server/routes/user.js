@@ -26,7 +26,7 @@ const usercontroller=require("../controllers/usecontroller");
 
 //if we specify the prefix for router than we dont need to specify the path on every endpoint
 //but /:id is a parameter is need toi be specified
-router.get("/",usercontroller.login);
+
 
 
 
