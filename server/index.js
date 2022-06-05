@@ -12,6 +12,7 @@ const session=require("express-session")
 
 //importing passport middle ware 
 const passport=require("passport");
+
 //importing the local strategy setup module
 require("./configs/local");
 
@@ -67,6 +68,7 @@ app.get("/cart",(req,res)=>{
 })
 
 app.post("/cart",(req,res,next)=>{
+    console.log(req.sessionID)
     if(req.session.user){
         console.log(req.session.user)
         const auth=db.find(obj=>{
@@ -129,6 +131,9 @@ const db=[
 
 
 ]
+
+
+//this route is used for session authentication previoslyu
 app.post("/auth",(req,res)=>{
     const user=req.body.name;
     const password=req.body.pass;
@@ -143,7 +148,7 @@ app.post("/auth",(req,res)=>{
         req.session.user={
             id:user
         }
-        res.send(req.session.user)
+        res.send(req.sessionID)
     }else{
         res.send("fuck you")
     }
@@ -151,7 +156,18 @@ app.post("/auth",(req,res)=>{
 
 })
 
+ 
 
+//the passport middle ware is initially used to authenticate user to login and serialize user
+app.post("/login",passport.authenticate("local"),(req,res)=>{
+    console.log("user in request handler")
+    res.sendStatus(201)
+})
+
+
+app.get("/nikan",(req,res)=>{
+    res.send("nikan is a good");
+})
 
 
 

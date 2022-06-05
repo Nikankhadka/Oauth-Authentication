@@ -5,7 +5,7 @@
 
 //importing router funtion from express
 const {Router}=require("express");
-
+const passport=require("passport");
 //instance of router by calling function returns an object
 const router=Router();
 
@@ -33,6 +33,21 @@ const usercontroller=require("../controllers/usecontroller");
 
 
 
+//setting up middlw are to authorize the user
+router.use((req,res,next)=>{
+        console.log(req.user);
+        if(req.user) next();
+        else res.send("fuck u bitch")
+
+
+
+})
+
+router.get("/check",(req,res)=>{
+        
+        console.log("middle ware has authirized to use this route")
+        res.send("response pais jatha ")
+    })
 
 
 
