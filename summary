@@ -46,6 +46,7 @@ each startegy need their own wau to setup but working process is almost same
 //local strategy:use post request to along wih credential once user is authentiacted and send response then redirect from client side 
 
 //google start: a tag let browser send the get request once google authorizes and user id verified callback route will redirect client side to dashboard
+//faceboo: a tag let browser send the get request once google authorizes and user id verified callback route will redirect client side to dashboard
 
 
 
