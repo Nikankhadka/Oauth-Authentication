@@ -1,0 +1,17 @@
+this is basic overview of what i learned and should be reminded of looking back at the topic
+
+some of the term introduced here:
+session:it is property which helps to store data in server 
+cookies:it is a property of the browser which allows to store server data (by passing credential with request)
+
+
+//initially i worked with session for normal authentication 
+session is used since storingn the user or any kind of information on  cookies is dangerous but storing session id is ok as it is used to accss the session object.
+session id is useless in client side as it is only used to access the session object in server side
+
+session object:it is an obkect which is used to store information such as user id after the validation.
+session-cookie:cookie which contains the session id which is set when the session obj is modified manually and res is passed to the client.
+session-middle ware: checks for session object req.session.user? if exist then acess to route or not. even if there is session obj available without the session id 
+from the browser session object cant be accessed hence user is un authorized.
+
+session object can be modified for multiple purposesuch as to add items in card , but all modified obj is valid for the particular session only
