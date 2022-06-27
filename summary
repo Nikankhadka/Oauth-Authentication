@@ -1,0 +1,59 @@
+this is basic overview of what i learned and should be reminded of looking back at the topic
+
+some of the term introduced here:
+session:it is property which helps to store data in server 
+cookies:it is a property of the browser which allows to store server data (by passing credential with request)
+
+
+//initially i worked with session for normal authentication 
+session is used since storingn the user or any kind of information on  cookies is dangerous but storing session id is ok as it is used to accss the session object.
+session id is useless in client side as it is only used to access the session object in server side
+
+session object:it is an obkect which is used to store information such as user id after the validation.
+session-cookie:cookie which contains the session id which is set when the session obj is modified manually and res is passed to the client.
+session-middle ware: checks for session object req.session.user? if exist then acess to route or not. even if there is session obj available without the session id 
+from the browser session object cant be accessed hence user is un authorized.
+
+session object can be modified for multiple purposesuch as to add items in card , but all modified obj is valid for the particular session only
+
+normally session is set to end on close of applicaiton if cookie or session is deleted on either side the session is ended for the we can modify session.cookie proprty 
+to increase the age of cookie  and also use db to store session data for server crashes (use connect-mongo).
+
+
+//passport js authentication with multiple startegy
+  
+  passportjs is a library for middle ware which we can use for authentication and authorization.
+  
+  it consist of three parts uses express-session similar to above but makes things easier as everything is done by them.
+  
+  setting of startegy:seleect the strategy then setup the startegy using the constructor 
+  //serializing user:this is one of the important parts once the user is authenticated in above then user id is passed to serialize,
+  attaches the user to session object req.session.passport.user=id
+  and also sets cookie with session id in the client side
+  
+  
+  //here my fnc was not called because when user was serialized the cookie was not set make sure to pass credential with request to set cookie
+  //deserialize:this function is called once the user is serialized it gets session id from cookie then acces the session obj to attach the id to req.user=id
+  which enables the is authenticated and logout fucntion from passport to use
+  
+  
+
+
+
+each startegy need their own wau to setup but working process is almost same
+//when redirecting dont create multiple source redirection like when axios request is passed dont redirect directly not working that wayt 
+
+//local strategy:use post request to along wih credential once user is authentiacted and send response then redirect from client side 
+
+//google start: a tag let browser send the get request once google authorizes and user id verified callback route will redirect client side to dashboard
+//faceboo: a tag let browser send the get request once google authorizes and user id verified callback route will redirect client side to dashboard
+
+
+
+
+
+
+
+
+
+
