@@ -2,7 +2,7 @@
 const express=require ("express");
 const app=express();
 const port=2900;
-const useroute=require("./routes/user");
+
 //cross origin resource sharing it is a protocal to help applicationt o accept api request from certain domain 
 const cors = require("cors")
 
@@ -13,8 +13,17 @@ const session=require("express-session")
 //importing passport middle ware 
 const passport=require("passport");
 
-//importing the local strategy setup module
-require("./configs/local");
+
+
+//connect mongo to store session in mongo db collections
+const mongostore=require("connect-mongo");
+
+
+
+//routes
+const useroute=require("./routes/user");
+const passportroute=require("../server/routes/passportauth");
+
 
 
 
@@ -23,12 +32,27 @@ require("./configs/local");
 //global middle ware to interecpt request 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors())
+app.use(cors({
+    origin:"http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    credentials:true
+}))
+
+
 app.use(session(
     {
         secret:"secretkeytoencodeanddecodeinformation",
         resave:false,
-        saveUninitialized:false
+        saveUninitialized:false,
+        //this cookie property helps to schedule deuration of cookie in froont ned
+        cookie:{
+            maxAge:1000*60*60*24
+        },
+
+        //we using connect mongo to store session data, prevents from losing on server crash
+        store:mongostore.create({
+            mongoUrl:"mongodb://localhost/nikan2",
+        }),
     }
 
 ));
@@ -39,134 +63,63 @@ app.use(passport.session());
 
 
 
-var value= 0;
-
-
-
 
 //now register the router always keep it after the middle wares
 //setting prefix is good dont need to notify path in every route
 app.use("/userroute/api/v1",useroute);
-
-
-//check passport middle ware in this route
-app.get("/cart",(req,res)=>{
-
-    //obj destrcutring test 
-    const {nikan}={
-        nikan:()=>{
-            console.log("nikan is a good guy")
-        }
-    }
-    nikan();
-
-    res.send(req.session.cart);
+app.use(passportroute);
 
 
 
 
-})
 
-app.post("/cart",(req,res,next)=>{
-    console.log(req.sessionID)
-    if(req.session.user){
-        console.log(req.session.user)
-        const auth=db.find(obj=>{
-            if(obj.user==req.session.user.id){
-               return obj;
-                
-            }
-        })
-        if(auth){
-            console.log("verifeid hai")
-            next()
-        }  
-    }else{
-        res.send("fuck u haiiiii")
-    }
+
+
+
+
+
+
+//check mongodb connections 
+
+app.get("/connect",async (req,res)=>{
+    try{
+         //ceated connection with db
+   await mongo.connect()
+
+    //cretae instance of model and also pass the document in constructor and use sinsatnce t save thedoc
+//    const cc=new check({
+//     name:"nikan",
+//     age:10,
+//     rollno:22
+//    })
+   
+   //another way to add doc is 
+   const doc=await usermodel.create({
     
+        name:"nikan khadka",
+        age:7,
+        email:"nikan.khadka.925@gmail.com",
+       
+   })
+//before saving the document we can chneg the calue 
+    doc.name="nikan2"
+//as doc represents the obj of document its vlaue can be updated before saving
+   doc.save()
 
-},
-    (req,res,next)=>{
-        res.send("user veirified ok to use the routew")
-    // const item=req.body;
+   console.log(doc)
 
-
-    
-
-    // if(req.session.cart){
-    //     req.session.cart.items.push(item);
-    //     res.send("obj is added in to the item array")
-    // }else{
-    //     req.session.cart={
-    //         items:[item]
-    //     }
-    //     res.send("new added")
-    // }
-
-
-  
-
-})
-
-
-const db=[
-
-    {
-        user:"nikan",
-        pass:"khadka"
-    },
-    {
-        user:"nikan1",
-        pass:"khadka1"
-    },
-   
-    {
-        user:"nikan2",
-        pass:"khadka2"
-    },
-   
-   
-
-
-
-]
-
-
-//this route is used for session authentication previoslyu
-app.post("/auth",(req,res)=>{
-    const user=req.body.name;
-    const password=req.body.pass;
-   const auth= db.find(ob=>{
-
-        if(ob.user==user&&ob.pass==password){
-            return ob;
-        }
-
-    });
-    if(auth){
-        req.session.user={
-            id:user
-        }
-        res.send(req.sessionID)
-    }else{
-        res.send("fuck you")
+   //catch is important to catch and point out error wihoutt disturbin gthr progranm flow
+}catch(e){
+        console.log(e.message)
     }
-
+   
 
 })
 
- 
-
-//the passport middle ware is initially used to authenticate user to login and serialize user
-app.post("/login",passport.authenticate("local"),(req,res)=>{
-    console.log("user in request handler")
-    res.sendStatus(201)
-})
-
-
-app.get("/nikan",(req,res)=>{
-    res.send("nikan is a good");
+app.get("/get-doc",async(req,res)=>{
+   await  mongo.connect()
+  const docs= await usermodel.find();
+  res.send(docs);
 })
 
 

@@ -24,6 +24,7 @@ a {
   width:200px;
   margin-bottom:20px;
 }
+
 .form{
   display: flex;
   justify-content:center;
@@ -31,4 +32,20 @@ a {
   flex-direction: column;
 
 
+}
+.btn{
+  width:200px;
+  padding:8px 0px 8px 0px;
+  border:solid rgb(201, 193, 193);
+  border-radius: 5px;
+  background-color: rgb(173, 215, 226);
+  margin-bottom: 15px;
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  font-size:16px;
+}
+.btn:hover{
+  background-color: rgb(20, 79, 79);
+  color:azure
 }
