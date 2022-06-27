@@ -14,7 +14,7 @@ const FacebookStrategy=require("passport-facebook").Strategy
 const hash=require("../utils/hash");
 const mongo=require("../dbmodels/database");
 const usermodel=require("../dbmodels/usermodel");
-
+require("dotenv").config();
 
 
 
@@ -68,8 +68,8 @@ passport.use(
     passport.use(
         new GoogleStrategy(
             {
-                clientID:"499539449592-g7hi2ajs7eqv6o0ujrkpuo9kp7ltc478.apps.googleusercontent.com",
-                clientSecret:"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",
+                clientID:process.env.clientID,
+                clientSecret:process.env.clientSecret,
                 callbackURL:"http://localhost:2900/pr-route"
                 
             },
@@ -124,8 +124,8 @@ passport.use(
 passport.use(
     new FacebookStrategy(
         {
-            clientID:"346962650896925",
-            clientSecret:"8235a4caabf107230e26810af1496807",
+            clientID:process.env.facebook_clientID,
+            clientSecret:process.env.facebook_clientSecret,
             callbackURL:"http://localhost:2900/pr-route/facebook"
         },
        async (accessToken,refreshToken,profile,done)=>{
