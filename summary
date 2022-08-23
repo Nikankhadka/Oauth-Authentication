@@ -27,13 +27,18 @@ to increase the age of cookie  and also use db to store session data for server 
   it consist of three parts uses express-session similar to above but makes things easier as everything is done by them.
   
   setting of startegy:seleect the strategy then setup the startegy using the constructor 
+  make sure to pass credentioal  request for the local strategy so that session id will  be saved in cookie wihout it the deserialize user function cannot be called.
+  
+  
   //serializing user:this is one of the important parts once the user is authenticated in above then user id is passed to serialize,
   attaches the user to session object req.session.passport.user=id
-  and also sets cookie with session id in the client side
+  and also sets cookie with session id in the client side  give access to credentatiol for local for gogole and facebook it is already given
   
   
   //here my fnc was not called because when user was serialized the cookie was not set make sure to pass credential with request to set cookie
-  //deserialize:this function is called once the user is serialized it gets session id from cookie then acces the session obj to attach the id to req.user=id
+  //deserialize:this function is called only if there is sessioon d on client witout it hte session cant be accessed with that 
+  the fution will  not be able to aattach use to request 
+  once the user is serialized it gets session id from cookie then acces the session obj to attach the id to req.user=id
   which enables the is authenticated and logout fucntion from passport to use
   
   
@@ -41,11 +46,15 @@ to increase the age of cookie  and also use db to store session data for server 
 
 
 each startegy need their own wau to setup but working process is almost same
-//when redirecting dont create multiple source redirection like when axios request is passed dont redirect directly not working that wayt 
+//when redirecting dont create multiple source redirection like when axios request is passed dont redirect directly not working that wayt because axios wants response with redirection cors erro wil be ssen
+
 
 //local strategy:use post request to along wih credential once user is authentiacted and send response then redirect from client side 
 
-//google start: a tag let browser send the get request once google authorizes and user id verified callback route will redirect client side to dashboard
+//google start: a tag let browser send the get request once google authorizes the data will be passed into callback fuction route where the middle ware funciton will 
+start the strategy process once evrythinh is done and serialized then request handler will be executed or can setup the success and failure redirction in middleare and no need for 
+request handler
+
 //faceboo: a tag let browser send the get request once google authorizes and user id verified callback route will redirect client side to dashboard
 
 
